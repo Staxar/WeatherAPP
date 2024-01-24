@@ -1,21 +1,48 @@
-import { StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+
+import Card from "../components/Card";
 export default function Page() {
   return (
-    <View style={styles.container}>
-      <Text>Main Page</Text>
-    </View>
+    <SafeAreaView style={styles.outerContainer}>
+      <ImageBackground
+        source={require("../assets/galaxy.jpg")}
+        resizeMode="cover"
+        style={styles.backgroundImage}
+      >
+        <View style={styles.innerContainer}>
+          <Text style={{ color: "white" }}>Main Page</Text>
+          <Card>
+            <Text style={{ color: "white" }}>London</Text>
+            <Text>54 °C</Text>
+            <Image
+              source={{ uri: "https://openweathermap.org/img/wn/10d@2x.png" }}
+              alt="weather-icon"
+              width={50}
+              height={50}
+            />
+            <Text>Heave Rain</Text>
+            <Text>Hourly</Text>
+          </Card>
+        </View>
+      </ImageBackground>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  container: {
+  outerContainer: {
+    flex: 1,
+  },
+  innerContainer: {
     margin: 50,
   },
-  bigBlue: {
-    color: "blue",
-    fontWeight: "bold",
-    fontSize: 30,
-  },
-  red: {
-    color: "red",
+  backgroundImage: {
+    flex: 1,
   },
 });
