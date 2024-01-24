@@ -1,14 +1,13 @@
-import {
-  Image,
-  ImageBackground,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { ImageBackground, SafeAreaView, StyleSheet, View } from "react-native";
 
-import Card from "../components/Card";
+import fakeData from "../assets/data.json";
+import Header from "../components/Header";
+import WheaterBaseInfo from "../components/WheaterBaseInfo";
+
 export default function Page() {
+  const [data, setData] = useState(fakeData);
+
   return (
     <SafeAreaView style={styles.outerContainer}>
       <ImageBackground
@@ -16,20 +15,12 @@ export default function Page() {
         resizeMode="cover"
         style={styles.backgroundImage}
       >
+        <Header city={data.name} />
         <View style={styles.innerContainer}>
-          <Text style={{ color: "white" }}>Main Page</Text>
-          <Card>
-            <Text style={{ color: "white" }}>London</Text>
-            <Text>54 °C</Text>
-            <Image
-              source={{ uri: "https://openweathermap.org/img/wn/10d@2x.png" }}
-              alt="weather-icon"
-              width={50}
-              height={50}
-            />
-            <Text>Heave Rain</Text>
-            <Text>Hourly</Text>
-          </Card>
+          <WheaterBaseInfo
+            temp={Math.round(data.main.temp)}
+            weather={data.weather[0]}
+          />
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -40,9 +31,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   innerContainer: {
-    margin: 50,
+    margin: 20,
+    color: "white",
+    alignItems: "center",
+    justifyContent: "center",
   },
   backgroundImage: {
     flex: 1,
+  },
+  largeText: {
+    fontSize: 48,
+  },
+  text: {
+    color: "white",
   },
 });
