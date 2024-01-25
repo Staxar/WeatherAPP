@@ -2,6 +2,7 @@ import { Suspense, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import { Button, Menu } from 'react-native-paper';
+import { transparent } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import cityList from '../assets/transformedCitiesList.json';
@@ -44,6 +45,18 @@ const Header = ({ city, changeName }: HeaderProps) => {
           clearOnFocus={false}
           closeOnBlur
           closeOnSubmit={false}
+          useFilter
+          debounce={500}
+          containerStyle={{
+            width: 200,
+            backgroundColor: 'transparent',
+            borderWidth: 1,
+            borderColor: 'white',
+            borderRadius: 4,
+          }}
+          inputContainerStyle={{ width: 200, backgroundColor: 'transparent' }}
+          trimSearchText
+          textInputProps={{ style: { color: 'white' } }}
         />
       </Suspense>
       <EvilIcons name="plus" size={24} color="white" />
