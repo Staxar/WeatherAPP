@@ -1,9 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Suspense, useEffect, useState } from 'react';
+import { Fragment, Suspense, useEffect, useState } from 'react';
 import { ActivityIndicator, ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native';
+import { Divider } from 'react-native-paper';
+import uuid from 'react-native-uuid';
 
 import initialData from '../assets/data.json';
 import Header from '../components/Header';
+import ItemDescription from '../components/ItemDescription';
 import PortalDialog from '../components/PortalDialog';
 import WheaterBaseInfo from '../components/WheaterBaseInfo';
 
@@ -59,7 +62,6 @@ export default function Page() {
   const saveCityNameToCache = async (cityToSave: string) => {
     try {
       if (cityNamesArray.includes(cityToSave)) {
-        console.log('City name already exist:', cityToSave);
         return;
       }
       const newCityNames = [...cityNamesArray, cityToSave];
@@ -82,6 +84,27 @@ export default function Page() {
     }
   };
 
+  const weatherInfoData = [
+    {
+      src: ['thermometer', 'water-check'],
+      bottomText: [data.main.feels_like.toString(), data.main.humidity.toString()],
+      color: ['red', 'blue'],
+      topText: ['Feels like', 'Humidity'],
+    },
+    {
+      src: ['car-brake-low-pressure', 'cloud-outline'],
+      bottomText: [data.main.pressure.toString(), data.clouds.all.toString()],
+      color: ['yellow', '#35a7db'],
+      topText: ['Pressure', 'Clouds'],
+    },
+    {
+      src: ['eye-outline', 'wind-turbine'],
+      bottomText: [data.visibility.toString(), data.wind.speed.toString()],
+      color: ['#611878', '#88e63c'],
+      topText: ['Visibility', 'Wind'],
+    },
+  ];
+
   const removeCityHandler = async (cityToRemove: string) => {
     const updatedCityNames = cityNamesArray.filter((city) => city !== cityToRemove);
     await AsyncStorage.setItem('cityNames', JSON.stringify(updatedCityNames));
@@ -98,7 +121,6 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    console.log(cityName);
     const fetchData = async () => {
       try {
         if (cityName !== '') {
@@ -156,6 +178,22 @@ export default function Page() {
           />
           <View style={styles.innerContainer}>
             <WheaterBaseInfo temp={Math.round(data.main.temp)} weather={data.weather[0]} />
+            <View style={styles.itemOuterContainer}>
+              <View style={styles.itemContainer}>
+                {weatherInfoData.map((item, index) => (
+                  <Fragment key={uuid.v4().toString()}>
+                    <ItemDescription
+                      key={uuid.v4().toString()}
+                      src={item.src}
+                      bottomText={item.bottomText}
+                      color={item.color}
+                      topText={item.topText}
+                    />
+                    {index < weatherInfoData.length - 1 && <Divider style={styles.divider} />}
+                  </Fragment>
+                ))}
+              </View>
+            </View>
           </View>
         </ImageBackground>
       </Suspense>
@@ -180,5 +218,21 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
+  },
+  divider: {
+    width: '100%',
+    margin: 10,
+  },
+  itemContainer: {
+    alignItems: 'center',
+  },
+  itemOuterContainer: {
+    marginTop: 20,
+    backgroundColor: 'grey',
+    opacity: 0.5,
+    borderRadius: 8,
+    width: '100%',
+    height: 200,
+    padding: 20,
   },
 });
