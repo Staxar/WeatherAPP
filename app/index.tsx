@@ -58,7 +58,7 @@ export default function Page() {
           queryParams.append('units', 'metric');
 
           const response = await fetch(
-            `http://172.16.1.144:3000/weather/${cityName}?${queryParams}`,
+            `${process.env.EXPO_PUBLIC_API_URL}/weather/${cityName}?${queryParams}`,
           );
 
           if (response.ok) {

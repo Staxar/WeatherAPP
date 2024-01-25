@@ -1,16 +1,10 @@
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import { Button, Menu } from 'react-native-paper';
-import { transparent } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
-import cityList from '../assets/transformedCitiesList.json';
+import Input from './Input';
 
-interface City {
-  id: string;
-  title: string;
-}
 interface HeaderProps {
   city: string;
   changeName: (text: string) => void;
@@ -18,13 +12,10 @@ interface HeaderProps {
 
 const Header = ({ city, changeName }: HeaderProps) => {
   const [visible, setVisible] = useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const openMenu = () => setVisible(true);
 
+  const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
-  function Loading() {
-    return <h2>🌀 Loading...</h2>;
-  }
+
   return (
     <View style={styles.innerContainer}>
       <Menu
@@ -39,27 +30,7 @@ const Header = ({ city, changeName }: HeaderProps) => {
         <Menu.Item onPress={() => {}} title="Item 2" />
         <Menu.Item onPress={() => {}} title="Item 3" />
       </Menu>
-      <Suspense fallback={<Loading />}>
-        <AutocompleteDropdown
-          dataSet={cityList as City[]}
-          clearOnFocus={false}
-          closeOnBlur
-          closeOnSubmit={false}
-          useFilter
-          debounce={500}
-          containerStyle={{
-            width: 200,
-            backgroundColor: 'transparent',
-            borderWidth: 1,
-            borderColor: 'white',
-            borderRadius: 4,
-          }}
-          inputContainerStyle={{ width: 200, backgroundColor: 'transparent' }}
-          trimSearchText
-          textInputProps={{ style: { color: 'white' } }}
-        />
-      </Suspense>
-      <EvilIcons name="plus" size={24} color="white" />
+      <Input changeCityName={changeName} />
     </View>
   );
 };
@@ -73,7 +44,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     marginTop: 20,
-    height: 80,
+    height: 100,
   },
   text: {
     color: 'white',
