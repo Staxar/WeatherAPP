@@ -58,29 +58,29 @@ export default function Page() {
   const [cityNamesArray, setCityNamesArray] = useState<string[]>([]);
   const [portalVisible, setPortalVisible] = useState(false);
   const [cityCache, setCityCache] = useState<string>('');
-
+  const CITIES_NAMES_STORAGE_KEY = 'cityNames';
   const saveCityNameToCache = async (cityToSave: string) => {
     try {
       if (cityNamesArray.includes(cityToSave)) {
         return;
       }
       const newCityNames = [...cityNamesArray, cityToSave];
-      await AsyncStorage.setItem('cityNames', JSON.stringify(newCityNames));
+      await AsyncStorage.setItem(CITIES_NAMES_STORAGE_KEY, JSON.stringify(newCityNames));
       setCityNamesArray(newCityNames);
     } catch (error) {
-      console.error('Something went wrong:', error);
+      console.error('Error saving city name to cache:', error);
     }
   };
 
   const readCityNamesFromCache = async () => {
     try {
-      const cachedCityNamesJSON = await AsyncStorage.getItem('cityNames');
+      const cachedCityNamesJSON = await AsyncStorage.getItem(CITIES_NAMES_STORAGE_KEY);
       if (cachedCityNamesJSON) {
         const cachedCityNames = JSON.parse(cachedCityNamesJSON);
         setCityNamesArray(cachedCityNames);
       }
     } catch (error) {
-      console.error('Something went wrong:', error);
+      console.error('Error reading city names from cache:', error);
     }
   };
 
@@ -107,7 +107,7 @@ export default function Page() {
 
   const removeCityHandler = async (cityToRemove: string) => {
     const updatedCityNames = cityNamesArray.filter((city) => city !== cityToRemove);
-    await AsyncStorage.setItem('cityNames', JSON.stringify(updatedCityNames));
+    await AsyncStorage.setItem(CITIES_NAMES_STORAGE_KEY, JSON.stringify(updatedCityNames));
     setCityNamesArray(updatedCityNames);
     setPortalVisible(false);
   };
