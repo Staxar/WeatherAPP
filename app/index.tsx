@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { ImageBackground, SafeAreaView, StyleSheet, View } from "react-native";
+import { useEffect, useState } from 'react';
+import { ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native';
 
-import fakeData from "../assets/data.json";
-import Header from "../components/Header";
-import WheaterBaseInfo from "../components/WheaterBaseInfo";
+import initialData from '../assets/data.json';
+import Header from '../components/Header';
+import WheaterBaseInfo from '../components/WheaterBaseInfo';
 
 interface WeatherResponse {
   coord: {
@@ -48,38 +48,44 @@ interface WeatherResponse {
 }
 
 export default function Page() {
-  const [data, setData] = useState<WeatherResponse>(fakeData);
-  const [cityName, setCityName] = useState<string>("");
+  const [data, setData] = useState<WeatherResponse>(initialData);
+  const [cityName, setCityName] = useState<string>('');
   useEffect(() => {
-    const fetchData = async () => {
-      const queryParams = new URLSearchParams();
-      queryParams.append("units", "metric");
-      const response = await fetch(
-        `http://172.16.1.144:3000/weather/warsaw?${queryParams}`,
-      );
-      if (response.ok) {
-        const responseData: WeatherResponse = await response.json();
-        setData(responseData);
-      } else {
-        alert("Something went wrong! Check city name and try again.");
-      }
-    };
-    fetchData();
+    if (cityName === 'asd') {
+      const fetchData = async () => {
+        try {
+          const queryParams = new URLSearchParams();
+          queryParams.append('units', 'metric');
+
+          const response = await fetch(
+            `http://172.16.1.144:3000/weather/${cityName}?${queryParams}`,
+          );
+
+          if (response.ok) {
+            const responseData: WeatherResponse = await response.json();
+            setData(responseData);
+          } else {
+            alert('Something went wrong! Check city name and try again.');
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+          alert('An error occurred. Please try again later.');
+        }
+      };
+
+      fetchData();
+    }
   }, [cityName]);
 
   return (
     <SafeAreaView style={styles.outerContainer}>
       <ImageBackground
-        source={require("../assets/galaxy.jpg")}
+        source={require('../assets/galaxy.jpg')}
         resizeMode="cover"
-        style={styles.backgroundImage}
-      >
-        <Header city={data.name} />
+        style={styles.backgroundImage}>
+        <Header city={cityName} changeName={setCityName} />
         <View style={styles.innerContainer}>
-          <WheaterBaseInfo
-            temp={Math.round(data.main.temp)}
-            weather={data.weather[0]}
-          />
+          <WheaterBaseInfo temp={Math.round(data.main.temp)} weather={data.weather[0]} />
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -91,9 +97,9 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     margin: 20,
-    color: "white",
-    alignItems: "center",
-    justifyContent: "center",
+    color: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   backgroundImage: {
     flex: 1,
@@ -102,6 +108,6 @@ const styles = StyleSheet.create({
     fontSize: 48,
   },
   text: {
-    color: "white",
+    color: 'white',
   },
 });

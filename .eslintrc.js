@@ -1,12 +1,12 @@
 module.exports = {
   root: true,
-  extends: ["universe/native"],
-  plugins: ["prettier"],
+  extends: ['universe/native'],
+  plugins: ['prettier'],
   rules: {
-    "prettier/prettier": [
-      "error",
+    'prettier/prettier': [
+      'error',
       {
-        endOfLine: "auto",
+        endOfLine: 'auto',
       },
     ],
   },

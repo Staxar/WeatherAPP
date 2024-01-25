@@ -1,9 +1,13 @@
-import { Slot } from "expo-router";
-import { PaperProvider } from "react-native-paper";
+import { Slot } from 'expo-router';
+import React from 'react';
+import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
+import { PaperProvider } from 'react-native-paper';
 export default function HomeLayout() {
   return (
-    <PaperProvider>
-      <Slot />
-    </PaperProvider>
+    <AutocompleteDropdownContextProvider>
+      <PaperProvider>
+        <Slot />
+      </PaperProvider>
+    </AutocompleteDropdownContextProvider>
   );
 }
