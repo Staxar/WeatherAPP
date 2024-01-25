@@ -51,30 +51,28 @@ export default function Page() {
   const [data, setData] = useState<WeatherResponse>(initialData);
   const [cityName, setCityName] = useState<string>('');
   useEffect(() => {
-    if (cityName === 'asd') {
-      const fetchData = async () => {
-        try {
-          const queryParams = new URLSearchParams();
-          queryParams.append('units', 'metric');
+    const fetchData = async () => {
+      try {
+        const queryParams = new URLSearchParams();
+        queryParams.append('units', 'metric');
 
-          const response = await fetch(
-            `${process.env.EXPO_PUBLIC_API_URL}/weather/${cityName}?${queryParams}`,
-          );
+        const response = await fetch(
+          `${process.env.EXPO_PUBLIC_API_URL}/weather/${cityName}?${queryParams}`,
+        );
 
-          if (response.ok) {
-            const responseData: WeatherResponse = await response.json();
-            setData(responseData);
-          } else {
-            alert('Something went wrong! Check city name and try again.');
-          }
-        } catch (error) {
-          console.error('An error occurred:', error);
-          alert('An error occurred. Please try again later.');
+        if (response.ok) {
+          const responseData: WeatherResponse = await response.json();
+          setData(responseData);
+        } else {
+          alert('Something went wrong! Check city name and try again.');
         }
-      };
+      } catch (error) {
+        console.error('An error occurred:', error);
+        alert('An error occurred. Please try again later.');
+      }
+    };
 
-      fetchData();
-    }
+    fetchData();
   }, [cityName]);
 
   return (
