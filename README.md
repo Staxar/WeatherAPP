@@ -13,7 +13,7 @@ A mobile app for checking weather information.
 ## Usage
 Clone & Run backend from this repository - [weather-app-backend ](https://reactjs.org/)
 
-Add .env file and paste your IP adress for develop: EXPO_PUBLIC_API_URL=http://{your-ip-address}
+Add .env file and paste your IP adress for develop: EXPO_PUBLIC_API_URL=http://{your-ip-address}:3000
 
 Run backend then run WeatherAPP
 
