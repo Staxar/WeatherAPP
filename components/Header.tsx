@@ -30,7 +30,7 @@ const Header = ({ city, changeName, cityNamesArray, openPortal, changeCityCache 
         visible={visible}
         onDismiss={closeMenu}
         anchor={
-          <Button onPress={openMenu} style={{ padding: 4 }}>
+          <Button onPress={openMenu} style={styles.button}>
             <EvilIcons name="navicon" size={24} color="white" />
           </Button>
         }>
@@ -64,5 +64,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 24,
   },
-  searchbar: { margin: 'auto', width: 200, backgroundColor: 'transparent' },
+  searchbar: {
+    margin: 'auto',
+    width: 200,
+    backgroundColor: 'transparent',
+  },
+  button: {
+    padding: 4,
+  },
 });

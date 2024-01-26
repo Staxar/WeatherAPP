@@ -23,7 +23,7 @@ const Input = ({ changeCityName }: InpuProps) => {
     formatError: '',
     numbersError: '',
   });
-  const [isValid, setIsValid] = useState<boolean | null>(null);
+
   const [buttonIcon, setButtonIcon] = useState<ButtonIcon>({
     iconName: 'plus',
     iconColor: 'white',
@@ -61,6 +61,7 @@ const Input = ({ changeCityName }: InpuProps) => {
     if (isValidCity) {
       changeCityName(cityName);
       setButtonIcon({ iconColor: 'green', iconName: 'check' });
+      setCityName('');
     } else {
       setButtonIcon({ iconColor: 'red', iconName: 'plus' });
     }

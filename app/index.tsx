@@ -1,6 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Fragment, Suspense, useEffect, useState } from 'react';
-import { ActivityIndicator, ImageBackground, SafeAreaView, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  ImageBackground,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { Divider } from 'react-native-paper';
 import uuid from 'react-native-uuid';
 
@@ -58,6 +65,7 @@ export default function Page() {
   const [cityNamesArray, setCityNamesArray] = useState<string[]>([]);
   const [portalVisible, setPortalVisible] = useState(false);
   const [cityCache, setCityCache] = useState<string>('');
+  const [problem, setProblem] = useState<boolean>(false);
   const CITIES_NAMES_STORAGE_KEY = 'cityNames';
   const saveCityNameToCache = async (cityToSave: string) => {
     try {
@@ -132,12 +140,14 @@ export default function Page() {
           );
 
           if (response.ok) {
-            saveCityNameToCache(cityName);
+            setProblem(false);
+            await saveCityNameToCache(cityName);
             setPortalVisible(false);
             const responseData: WeatherResponse = await response.json();
             setData(responseData);
           } else {
-            alert('Something went wrong! Check city name and try again.');
+            setProblem(true);
+            alert('Are you sure what you wrote? Please enter the city name again');
           }
         }
       } catch (error) {
@@ -166,7 +176,7 @@ export default function Page() {
       )}
       <Suspense fallback={<Loading />}>
         <ImageBackground
-          source={require('../assets/galaxy.jpg')}
+          source={problem ? require('../assets/apocalypse.jpg') : require('../assets/galaxy.jpg')}
           resizeMode="cover"
           style={styles.backgroundImage}>
           <Header
@@ -177,6 +187,9 @@ export default function Page() {
             changeCityCache={setCityCache}
           />
           <View style={styles.innerContainer}>
+            <View>
+              <Text style={[styles.bigText, problem && { color: 'red' }]}>{cityName}</Text>
+            </View>
             <WheaterBaseInfo temp={Math.round(data.main.temp)} weather={data.weather[0]} />
             <View style={styles.itemOuterContainer}>
               <View style={styles.itemContainer}>
@@ -234,5 +247,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     padding: 20,
+  },
+  bigText: {
+    fontSize: 48,
+    color: 'white',
   },
 });
