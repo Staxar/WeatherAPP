@@ -16,7 +16,8 @@ Clone & Run backend from this repository - [weather-app-backend ](https://reactj
 Add .env file and paste your IP adress for develop: EXPO_PUBLIC_API_URL=http://{your-ip-address}
 
 Run backend then run WeatherAPP
-...
+
+<img src="https://github.com/Staxar/WeatherAPP/blob/master/assets/weatherapp.gif" alt="weather-app" width="540" height="1200">
 
 ## Technologies Used
 
