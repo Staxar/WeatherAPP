@@ -147,6 +147,7 @@ export default function Page() {
             setData(responseData);
           } else {
             setProblem(true);
+            setData(initialData);
             alert('Are you sure what you wrote? Please enter the city name again');
           }
         }
